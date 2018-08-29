@@ -93,3 +93,8 @@ EXPOSE 8983
 CMD ["/app/jusoro-1.1.0-linux64-internet/jusoro/bin/startup.sh"]
 </code></pre>
 
+### docker build (기본폴더에서 실행)
+* docker build -t jusoro .
+
+### docker run
+* docker run --name jusoro -d -p 8983:8983 jusoro
