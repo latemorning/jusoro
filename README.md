@@ -31,19 +31,19 @@ FROM ubuntu:16.04
 MAINTAINER harry <latemorning@gmail.com>
 
 RUN apt-get -y -qq update && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* && \
     useradd -ms /bin/bash -p jusoro jusoro && \
     mkdir -p /app/jusoro-1.1.0-linux64-internet
 
 COPY juso/jusoro-1.1.0-linux64-internet.tar /app/
 
-RUN chown -R jusoro:jusoro /app/jusoro-1.1.0-linux64-internet
-RUN chown -R jusoro:jusoro /app/jusoro-1.1.0-linux64-internet.tar
-
-USER jusoro
-
 RUN tar -xvf /app/jusoro-1.1.0-linux64-internet.tar -C /app/jusoro-1.1.0-linux64-internet/ && \
+    rm -rf /app/jusoro-1.1.0-linux64-internet.tar && \
     chmod -R 755 /app/jusoro-1.1.0-linux64-internet && \
-    rm -f /app/jusoro-1.1.0-linux64-internet.tar
+    chown -R jusoro:jusoro /app/jusoro-1.1.0-linux64-internet
+    
+USER jusoro
 
 COPY juso/jetty.xml /app/jusoro-1.1.0-linux64-internet/jusoro/server/etc/
 COPY juso/startup.sh /app/jusoro-1.1.0-linux64-internet/jusoro/bin/
@@ -54,48 +54,6 @@ EXPOSE 8983
 CMD ["/app/jusoro-1.1.0-linux64-internet/jusoro/bin/startup.sh"]
 </code></pre>
 
-* ubuntu:16.04 도커 이미지 사용
-<pre><code>
-FROM ubuntu:16.04
-</code></pre>
-
-* juso 컨테이너 서버 업데이트, jusoro 사용자 추가, 주소검색솔루션 설치 폴더 생성
-<pre><code>
-RUN apt-get -y -qq update && \
-    useradd -ms /bin/bash -p jusoro jusoro && \
-    mkdir -p /app/jusoro-1.1.0-linux64-internet
-</code></pre>
-
-* 호스트 서버 jusoro-1.1.0-linux64-internet.tar 파일을 juso 컨테이너 서버 /app/ 폴더에 복사, 권한부여, jusoro 사용자로 작업
-<pre><code>
-COPY juso/jusoro-1.1.0-linux64-internet.tar /app/
-
-RUN chown -R jusoro:jusoro /app/jusoro-1.1.0-linux64-internet
-RUN chown -R jusoro:jusoro /app/jusoro-1.1.0-linux64-internet.tar
-
-USER jusoro
-</code></pre>
-
-* 주소검색 솔루션 압축 해제, 압축해제 폴더 권한 변경, 솔루션 압축파일 삭제
-<pre><code>
-RUN tar -xvf /app/jusoro-1.1.0-linux64-internet.tar -C /app/jusoro-1.1.0-linux64-internet/ && \
-    chmod -R 755 /app/jusoro-1.1.0-linux64-internet && \
-    rm -f /app/jusoro-1.1.0-linux64-internet.tar
-</code></pre>
-
-* 호스트 서버의 설정파일을 juso 컨테이너에 복사, 작업폴더 변경
-<pre><code>
-COPY juso/jetty.xml /app/jusoro-1.1.0-linux64-internet/jusoro/server/etc/
-COPY juso/startup.sh /app/jusoro-1.1.0-linux64-internet/jusoro/bin/
-
-WORKDIR /app/jusoro-1.1.0-linux64-internet/jusoro/bin
-</code></pre>
-
-* 8983 포트 사용, 서버시작 스크립트 실행
-<pre><code>
-EXPOSE 8983
-CMD ["/app/jusoro-1.1.0-linux64-internet/jusoro/bin/startup.sh"]
-</code></pre>
 
 ### docker build (기본폴더에서 실행)
 * docker build -t jusoro .
