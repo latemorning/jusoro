@@ -11,6 +11,7 @@ juso.go.kr 주소검색솔루션 docker
 * #### 리눅스 64bit(인터넷망) jusoro-1.1.0-linux64-internet.tar.gz
 * #### 주소검색솔루션, 자바, jetty(WEB), tomcat이 포함되어있음
 * #### 활용가이드 참고
+ * ##### jetty.xml, startup.sh 파일에서 접근가능 IP와 메모리 설정을 함 자세한 내용은 활용가이드 
 
 ## 폴더 구조
 * home
