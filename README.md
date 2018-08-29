@@ -37,6 +37,7 @@ RUN apt-get -y -qq update && \
 COPY juso/jusoro-1.1.0-linux64-internet.tar /app/
 
 RUN chown -R jusoro:jusoro /app/jusoro-1.1.0-linux64-internet
+RUN chown -R jusoro:jusoro /app/jusoro-1.1.0-linux64-internet.tar
 
 USER jusoro
 
@@ -65,9 +66,12 @@ RUN apt-get -y -qq update && \
     mkdir -p /app/jusoro-1.1.0-linux64-internet
 </code></pre>
 
-* 호스트 서버 jusoro-1.1.0-linux64-internet.tar 파일을 juso 컨테이너 서버 /app/ 폴더에 복사, jusoro 사용자로 작업
+* 호스트 서버 jusoro-1.1.0-linux64-internet.tar 파일을 juso 컨테이너 서버 /app/ 폴더에 복사, 권한부여, jusoro 사용자로 작업
 <pre><code>
 COPY juso/jusoro-1.1.0-linux64-internet.tar /app/
+
+RUN chown -R jusoro:jusoro /app/jusoro-1.1.0-linux64-internet
+RUN chown -R jusoro:jusoro /app/jusoro-1.1.0-linux64-internet.tar
 
 USER jusoro
 </code></pre>
